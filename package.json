@@ -1,7 +1,7 @@
 {
   "name": "org.tayou.vrchat.sdk-ui-tweaks",
   "displayName": "VSUT - VRChat SDK UI Tweaks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2019.4",
   "description": "This package is a collection of harmony and reflection based patches for the VRChat SDK",
   "author": {
@@ -11,6 +11,6 @@
   },
   "url": "https://github.com/TayouVR/VRC-Expression-Parameter-Manager.git",
   "dependencies": {
-    "com.tayou.harmony.net472": "2.2.2"
+    "com.needle.editorpatching": "1.3.1"
   }
 }
