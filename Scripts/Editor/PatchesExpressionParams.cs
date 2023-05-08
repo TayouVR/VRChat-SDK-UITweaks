@@ -14,7 +14,7 @@ using HarmonyLib;
 
 namespace Tayou.VRChat.SDKUITweaks.Editor {
 
-    public partial class VRCSDKUIPatches {
+    public partial class Patches {
 
         // VRC Expression Parameters Editor
         [HarmonyPatch]
@@ -99,12 +99,6 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         // ReSharper disable once InconsistentNaming
         private static void ExpressionParametersListDestroy(VRCExpressionParametersEditor __instance) {
             ExpressionParametersLists.Remove(__instance);
-        }
-
-        private static void InvokeMethod(object targetObject, string methodName, params object[] parameters) {
-            targetObject.GetType()
-                .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance)
-                ?.Invoke(targetObject, parameters);
         }
 
         public class ExpressionParametersListData {

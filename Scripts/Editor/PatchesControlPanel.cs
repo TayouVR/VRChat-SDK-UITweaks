@@ -1,10 +1,9 @@
 using System.Reflection;
 using HarmonyLib;
-using UnityEditor;
 
 namespace Tayou.VRChat.SDKUITweaks.Editor {
 
-    public partial class VRCSDKUIPatches {
+    public partial class Patches {
 
         [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]

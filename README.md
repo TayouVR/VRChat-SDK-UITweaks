@@ -6,8 +6,8 @@ When installing this package (either via OpenUPM or as git package) make sure yo
 ## Patches
 
 - ExpressionParameters list uses a ReorderableList
-- [ ] ExpressionMenu list uses a ReorderableList
-- [ ] ParameterDriver list uses a ReorderableList
+- ExpressionMenu list uses a ReorderableList
+- ParameterDriver list uses a ReorderableList
 - ExpressionParameters asset can transfer parameters to a AnimatorController easily
 - disable upload restrictions (this is because I'm too lazy to add my EditorOnly objects to VRChats whitelist, its just to allow uploading. The components are still stripped.)
 

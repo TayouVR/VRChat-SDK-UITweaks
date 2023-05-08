@@ -1,19 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Animations;
 using UnityEngine;
-using System.Linq;
-using VRC.SDKBase;
-using VRC.SDK3.Avatars.ScriptableObjects;
+using System.Reflection;
 using HarmonyLib;
 using UnityEditor;
 
 namespace Tayou.VRChat.SDKUITweaks.Editor {
 
     [InitializeOnLoad]
-    public partial class VRCSDKUIPatches {
+    public partial class Patches {
         private const string PackageJsonGuid = "c41bc17027c993147aa4f25b8cdf3c45";
         private static string version;
         public static string Version {
@@ -35,16 +31,18 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         
         private static int wait = 0;
         
-        private static readonly HarmonyLib.Harmony HarmonyInstance = new HarmonyLib.Harmony("Tayou.VRChat.SDKUITweaks");
+        private static readonly Harmony HarmonyInstance = new Harmony("Tayou.VRChat.SDKUITweaks");
 
         public static VRCSDKUIPatchesPreferences Prefs = new VRCSDKUIPatchesPreferences();
 
-        static VRCSDKUIPatches() {
+        static Patches() {
             // Register our patch delegate
             EditorApplication.update -= DoPatches;
             EditorApplication.update += DoPatches;
 
             ExpressionParametersLists = new Dictionary<VRCExpressionParametersEditor, ExpressionParametersListData>();
+            ParameterDriverLists = new Dictionary<AvatarParameterDriverEditor, ParameterDriverData>();
+            ExpressionMenuLists = new Dictionary<VRCExpressionsMenuEditor, ExpressionMenuData>();
         }
         
         static void DoPatches() {
@@ -87,8 +85,17 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         }
 
         public static Dictionary<VRCExpressionParametersEditor, ExpressionParametersListData> ExpressionParametersLists;
+        public static Dictionary<AvatarParameterDriverEditor, ParameterDriverData> ParameterDriverLists;
+        public static Dictionary<VRCExpressionsMenuEditor, ExpressionMenuData> ExpressionMenuLists;
+
+        private static object InvokeMethod(object targetObject, string methodName, params object[] parameters) {
+            return targetObject.GetType()
+                .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance)
+                ?.Invoke(targetObject, parameters);
+        }
     }
 
     public class VRCSDKUIPatchesPreferences {
+        // Stub -- I will add settings here eventually... maybe... like selectively enabling and disabling patches. We'll see..
     }
 }
