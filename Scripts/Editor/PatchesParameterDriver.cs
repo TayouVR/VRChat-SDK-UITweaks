@@ -142,13 +142,28 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
 
 				return height;
 			}
-
+			
+			static UnityEditor.Animations.AnimatorController GetCurrentController()
+			{
+				UnityEditor.Animations.AnimatorController controller = null;
+				var toolType = Type.GetType("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs");
+				var tool = EditorWindow.GetWindow(toolType);
+				var controllerProperty = toolType.GetProperty("animatorController", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+				if(controllerProperty != null)
+				{
+					controller = controllerProperty.GetValue(tool, null) as UnityEditor.Animations.AnimatorController;
+				}
+				else
+					Debug.LogError("Unable to find animator window.", tool);
+				return controller;
+			}
+			
 			void UpdateParameters()
 			{
 				driver = target as VRCAvatarParameterDriver;
 
 				//Build parameter names
-				UnityEditor.Animations.AnimatorController controller = (UnityEditor.Animations.AnimatorController)InvokeMethod(typeof(AvatarParameterDriverEditor), "GetCurrentController");
+				UnityEditor.Animations.AnimatorController controller = GetCurrentController(); //(UnityEditor.Animations.AnimatorController)InvokeMethod(typeof(AvatarParameterDriverEditor), "GetCurrentController");
 				if(controller != null)
 				{
 					//Standard
