@@ -1,5 +1,7 @@
 # VSUT - VRChat-SDK-UITweaks
 
+[![openupm](https://img.shields.io/npm/v/org.tayou.vrchat.sdk-ui-tweaks?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/org.tayou.vrchat.sdk-ui-tweaks/)
+
 This package is a collection of harmony and reflection based patches for the VRChat SDK.
 When installing this package (either via OpenUPM or as git package) make sure you have harmony installed too. OpenUPM has the "EditorPatching" package, which includes harmony.
 
