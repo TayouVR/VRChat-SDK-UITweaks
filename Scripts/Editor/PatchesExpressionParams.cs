@@ -128,7 +128,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
 
                 switch (column) {
                     case Column.OverallParamCount:
-                        outRect.width = paramCountLabelWidth;
+                        outRect.width = paramCountLabelWidth + 10;
                         outRect.x = rect.x;
                         break;
                     case Column.Type:
