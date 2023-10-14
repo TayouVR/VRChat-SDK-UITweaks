@@ -52,26 +52,54 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
                 // Unregister our delegate so it doesn't run again
                 EditorApplication.update -= DoPatches;
 
+                ApplyPatches();
+            }
+        }
+        private static List<IPatch> patches;
+
+        internal static void ApplyPatches()
+        {
+            if (patches == null) {
+                patches = new List<IPatch>();
+                var col = TypeCache.GetTypesDerivedFrom(typeof(IPatch));
+                foreach (var t in col) {
+                    if (t.IsAbstract) continue;
+                    var inst = Activator.CreateInstance(t) as IPatch;
+                    patches.Add(inst);
+                }
+				
+            }
+
+            foreach (var p in patches) {
                 try {
-                    HarmonyInstance.PatchAll();
-                    DebugLog("Patches Applied!");
+                    p.Apply(HarmonyInstance);
                 } catch (Exception e) {
-                    DebugLog("Harmony Patching Failed with exception, unpatching!\n" + e.Message, DebugLogSeverity.Error);
-                    HarmonyInstance.UnpatchAll();
+                    DebugLog($"Harmony Patching for Patch \"{p.GetType()}\" Failed with exception, unpatching!\n{e.Message}", DebugLogSeverity.Error);
+                    p.Remove(HarmonyInstance);
+                    return;
                 }
             }
+            DebugLog("Patches Applied!");
+        }
+
+        internal static void RemovePatches()
+        {
+            if (HarmonyInstance == null) return;
+			
+            foreach (var p in patches)
+                p.Remove(HarmonyInstance);
         }
 
         public static void DebugLog(string message, DebugLogSeverity severity = DebugLogSeverity.Message) {
             switch (severity) {
                 case DebugLogSeverity.Message:
-                    Debug.Log($"[VRCSDKUIPatches v{Version}] " + message);
+                    Debug.Log($"[VSUT v{Version}] {message}");
                     break;
                 case DebugLogSeverity.Warning:
-                    Debug.LogWarning($"[VRCSDKUIPatches v{Version}] " + message);
+                    Debug.LogWarning($"[VSUT v{Version}] {message}");
                     break;
                 case DebugLogSeverity.Error:
-                    Debug.LogError($"[VRCSDKUIPatches v{Version}] " + message);
+                    Debug.LogError($"[VSUT v{Version}] {message}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(severity), severity, null);

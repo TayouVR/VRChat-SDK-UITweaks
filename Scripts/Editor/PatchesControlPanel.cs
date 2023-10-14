@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 
@@ -5,14 +6,17 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
 
     public partial class Patches {
 
-        [HarmonyPatch]
-        [HarmonyPriority(Priority.Low)]
-        private class PatchControlPanel1 {
-            
-            [HarmonyTargetMethod]
-            public static MethodBase TargetMethod() => AccessTools.Method(typeof(VRCSdkControlPanel), nameof(VRCSdkControlPanel.NoGuiErrorsOrIssues));
+        // ******************
+        // This doesn't work in SDK versions 3.3.0 and higher, I have no idea how to fix right now.
+        // ******************
 
-            [HarmonyPrefix]
+        [HarmonyPriority(Priority.Low)]
+        private class PatchControlPanelErrorsOrIssues : PatchBase {
+
+            protected override IEnumerable<MethodBase> GetPatches() {
+                yield return AccessTools.Method(typeof(VRCSdkControlPanel), nameof(VRCSdkControlPanel.NoGuiErrorsOrIssues));
+            }
+            
             // ReSharper disable once InconsistentNaming
             public static bool Prefix(VRCExpressionParametersEditor __instance, ref bool __result) {
                 __result = true;
@@ -21,14 +25,13 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             }
         }
         
-        [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]
-        private class PatchControlPanel2 {
-            
-            [HarmonyTargetMethod]
-            public static MethodBase TargetMethod() => AccessTools.Method(typeof(VRCSdkControlPanel), nameof(VRCSdkControlPanel.NoGuiErrors));
+        private class PatchControlPanelErrors : PatchBase {
 
-            [HarmonyPrefix]
+            protected override IEnumerable<MethodBase> GetPatches() {
+                yield return AccessTools.Method(typeof(VRCSdkControlPanel), nameof(VRCSdkControlPanel.NoGuiErrors));
+            }
+
             // ReSharper disable once InconsistentNaming
             public static bool Prefix(VRCExpressionParametersEditor __instance, ref bool __result) {
                 __result = true;

@@ -5,8 +5,8 @@ using VRC.SDK3.Avatars.Components;
 using VRC.SDKBase;
 using UnityEngine;
 using static VRC.SDKBase.VRC_AvatarParameterDriver;
-using Boo.Lang;
 using System;
+using System.Collections.Generic;
 using UnityEditorInternal;
 using AnimatorControllerParameterType = UnityEngine.AnimatorControllerParameterType;
 
@@ -17,12 +17,12 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
 
         [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]
-        private class PatchParameterDriver {
-            
-            [HarmonyTargetMethod]
-            public static MethodBase TargetMethod() => AccessTools.Method(typeof(AvatarParameterDriverEditor), nameof(AvatarParameterDriverEditor.OnInspectorGUI));
+        private class PatchParameterDriver : PatchBase {
 
-            [HarmonyPrefix]
+	        protected override IEnumerable<MethodBase> GetPatches() {
+		        yield return AccessTools.Method(typeof(AvatarParameterDriverEditor), nameof(AvatarParameterDriverEditor.OnInspectorGUI));
+	        }
+            
             // ReSharper disable once InconsistentNaming
             public static bool Prefix(AvatarParameterDriverEditor __instance) {
 	            if (__instance == null) return true;

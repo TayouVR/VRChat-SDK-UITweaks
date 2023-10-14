@@ -1,6 +1,5 @@
 using HarmonyLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -16,12 +15,12 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
     public partial class Patches {
 
         // VRC Expression Parameters Editor
-        [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]
-        private class PatchExpressionMenu {
+        private class PatchExpressionMenu : PatchBase {
             
-            [HarmonyTargetMethod]
-            public static MethodBase TargetMethod() => AccessTools.Method(typeof(VRCExpressionsMenuEditor), nameof(VRCExpressionsMenuEditor.OnInspectorGUI));
+            protected override IEnumerable<MethodBase> GetPatches() {
+	            yield return AccessTools.Method(typeof(VRCExpressionsMenuEditor), nameof(VRCExpressionsMenuEditor.OnInspectorGUI));
+            }
 
             [HarmonyPrefix]
             // ReSharper disable once InconsistentNaming

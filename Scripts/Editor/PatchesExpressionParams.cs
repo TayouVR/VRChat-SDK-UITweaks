@@ -19,12 +19,12 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         // VRC Expression Parameters Editor
         [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]
-        private class PatchExpressionParametersList {
-            
-            [HarmonyTargetMethod]
-            public static MethodBase TargetMethod() => AccessTools.Method(typeof(VRCExpressionParametersEditor), nameof(VRCExpressionParametersEditor.OnInspectorGUI));
+        private class PatchExpressionParametersList : PatchBase {
 
-            [HarmonyPrefix]
+            protected override IEnumerable<MethodBase> GetPatches() {
+                yield return AccessTools.Method(typeof(VRCExpressionParametersEditor), nameof(VRCExpressionParametersEditor.OnInspectorGUI));
+            }
+            
             // ReSharper disable once InconsistentNaming
             public static bool Prefix(VRCExpressionParametersEditor __instance) {
                 if (__instance == null) return true;
@@ -38,9 +38,8 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
                     __instance.serializedObject.Update();
                     if (data.List == null || __instance.serializedObject != data.List?.serializedProperty?.serializedObject) {
                         data.InitilizeList(__instance.serializedObject);
-                    } else {
-                        data.List.DoLayoutList();
                     }
+                    data.List.DoLayoutList();
                     __instance.serializedObject.ApplyModifiedProperties();
 
                     //Cost
@@ -73,9 +72,11 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
                 return false;
             }
             
-            // add transfer to controller option
-            [HarmonyPostfix]
             // ReSharper disable once InconsistentNaming
+            /// <summary>
+            /// add transfer to controller option
+            /// </summary>
+            /// <param name="__instance"></param>
             public static void Postfix(VRCExpressionParametersEditor __instance) {
                 if (!ExpressionParametersLists.TryGetValue(__instance, out var data)) {
                     ExpressionParametersLists[__instance] = data = new ExpressionParametersListData();
