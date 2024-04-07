@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
@@ -43,6 +44,8 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             }
         }
 
+        public abstract string GetPatchDisplayName();
+        
         public void Remove(Harmony instance)
         {
             if (!applied) return;
@@ -61,7 +64,6 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             patches.Clear();
         }
 
-        protected abstract IEnumerable<MethodBase>
-            GetPatches();
+        protected abstract IEnumerable<MethodBase> GetPatches();
     }
 }

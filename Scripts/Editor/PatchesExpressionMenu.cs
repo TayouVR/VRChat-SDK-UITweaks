@@ -18,6 +18,10 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         [HarmonyPriority(Priority.Low)]
         private class PatchExpressionMenu : PatchBase {
             
+	        public override string GetPatchDisplayName() {
+		        return "Expression Menu ReorderableList";
+	        }
+            
             protected override IEnumerable<MethodBase> GetPatches() {
 	            yield return AccessTools.Method(typeof(VRCExpressionsMenuEditor), nameof(VRCExpressionsMenuEditor.OnInspectorGUI));
             }

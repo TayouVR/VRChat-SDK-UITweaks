@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using System.Reflection;
 using HarmonyLib;
@@ -33,7 +34,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         
         private static readonly Harmony HarmonyInstance = new Harmony("Tayou.VRChat.SDKUITweaks");
 
-        public static VRCSDKUIPatchesPreferences Prefs = new VRCSDKUIPatchesPreferences();
+        public static VSUTPreferences Prefs = new();
 
         static Patches() {
             // Register our patch delegate
@@ -62,15 +63,24 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             if (patches == null) {
                 patches = new List<IPatch>();
                 var col = TypeCache.GetTypesDerivedFrom(typeof(IPatch));
-                foreach (var t in col) {
-                    if (t.IsAbstract) continue;
-                    var inst = Activator.CreateInstance(t) as IPatch;
+                foreach (var type in col) {
+                    if (type.IsAbstract) continue;
+                    var inst = Activator.CreateInstance(type) as IPatch;
                     patches.Add(inst);
+                    if (!Prefs.PatchProperties.Any(pp => pp.typeName == type.ToString())) {
+                        Prefs.PatchProperties.Add(new PatchProperties {
+                            typeName = type.ToString(), 
+                            displayName = inst.GetPatchDisplayName(),
+                            isEnabled = true
+                        });
+                    }
                 }
-				
             }
 
             foreach (var p in patches) {
+                if (Prefs.PatchProperties.All(pp => pp.typeName != p.GetType().ToString())) {
+                    return;
+                }
                 try {
                     p.Apply(HarmonyInstance);
                 } catch (Exception e) {
@@ -123,7 +133,35 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         }
     }
 
-    public class VRCSDKUIPatchesPreferences {
-        // Stub -- I will add settings here eventually... maybe... like selectively enabling and disabling patches. We'll see..
+    [Serializable]
+    public class PatchProperties {
+        public string typeName;
+        public string displayName;
+        public bool isEnabled;
+    }
+
+    [Serializable]
+    public class VSUTPreferences {
+        private const string SettingsKey = "VSUT-settings";
+        [SerializeField] public List<PatchProperties> PatchProperties;
+
+        public VSUTPreferences() {
+            var settingsJsonObject = (VSUTPreferences)JsonUtility.FromJson(EditorPrefs.GetString(SettingsKey), typeof(VSUTPreferences));
+            PatchProperties = settingsJsonObject?.PatchProperties == null ? new() : settingsJsonObject.PatchProperties;
+        }
+
+        public void Save() {
+            EditorPrefs.SetString(SettingsKey, JsonUtility.ToJson(this));
+        }
+
+        public bool IsPatchEnabled(string patchName) {
+            return PatchProperties.First(patch => patch.typeName == patchName).isEnabled;
+        }
+        public void SetPatchEnabled(string patchName, bool isEnabled) {
+            var patchProperty = PatchProperties.First(patch => patch.typeName == patchName);
+            if (patchProperty != null) {
+                patchProperty.isEnabled = isEnabled;
+            }
+        }
     }
 }

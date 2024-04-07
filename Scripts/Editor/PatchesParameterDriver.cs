@@ -18,6 +18,10 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
         [HarmonyPatch]
         [HarmonyPriority(Priority.Low)]
         private class PatchParameterDriver : PatchBase {
+            
+	        public override string GetPatchDisplayName() {
+		        return "Parameter Driver ReorderableList";
+	        }
 
 	        protected override IEnumerable<MethodBase> GetPatches() {
 		        yield return AccessTools.Method(typeof(AvatarParameterDriverEditor), nameof(AvatarParameterDriverEditor.OnInspectorGUI));
