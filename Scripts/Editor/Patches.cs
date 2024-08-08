@@ -41,9 +41,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             EditorApplication.update -= DoPatches;
             EditorApplication.update += DoPatches;
 
-            ExpressionParametersLists = new Dictionary<VRCExpressionParametersEditor, ExpressionParametersListData>();
             ParameterDriverLists = new Dictionary<AvatarParameterDriverEditor, ParameterDriverData>();
-            ExpressionMenuLists = new Dictionary<VRCExpressionsMenuEditor, ExpressionMenuData>();
         }
         
         static void DoPatches() {
@@ -122,9 +120,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             Error = 2
         }
 
-        public static Dictionary<VRCExpressionParametersEditor, ExpressionParametersListData> ExpressionParametersLists;
         public static Dictionary<AvatarParameterDriverEditor, ParameterDriverData> ParameterDriverLists;
-        public static Dictionary<VRCExpressionsMenuEditor, ExpressionMenuData> ExpressionMenuLists;
 
         private static object InvokeMethod(object targetObject, string methodName, params object[] parameters) {
             return targetObject.GetType()

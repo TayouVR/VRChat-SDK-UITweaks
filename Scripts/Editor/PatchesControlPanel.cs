@@ -22,7 +22,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             }
             
             // ReSharper disable once InconsistentNaming
-            public static bool Prefix(VRCExpressionParametersEditor __instance, ref bool __result) {
+            public static bool Prefix(VRCSdkControlPanel __instance, ref bool __result) {
                 __result = true;
                 //DebugLog("The patch is working 1");
                 return false;
@@ -41,7 +41,7 @@ namespace Tayou.VRChat.SDKUITweaks.Editor {
             }
 
             // ReSharper disable once InconsistentNaming
-            public static bool Prefix(VRCExpressionParametersEditor __instance, ref bool __result) {
+            public static bool Prefix(VRCSdkControlPanel __instance, ref bool __result) {
                 __result = true;
                 //DebugLog("The patch is working 2");
                 return false;
