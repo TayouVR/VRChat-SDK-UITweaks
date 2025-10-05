@@ -13,16 +13,18 @@ When installing this package (either via OpenUPM or as git package) make sure yo
 1. make sure you have git installed on your system and registered in the $PATH
 2. copy the git URL<br> ![image](https://user-images.githubusercontent.com/31988415/236935196-0c6dc425-e7ea-4f3e-92d3-accdbec582f8.png)
 3. paste it in the UPM UI in unity under "Add Git package"<br> ![image](https://user-images.githubusercontent.com/31988415/236935593-7ce9ac50-9a78-4c41-a123-f9d2977db9b4.png)
-4. download the newest version of Harmony from https://github.com/pardeike/Harmony/releases and extract 0Harmony.dll from the 4.7.2 folder into your unity assets folder 
+4. ~~download the newest version of Harmony from https://github.com/pardeike/Harmony/releases and extract 0Harmony.dll from the 4.7.2 folder into your unity assets folder~~    
+the VRChat SDK includes harmony since some versions ago, in december 2023
 
 #### manual install
 1. download the entire repository as zip and extract it into your projects **Packages** folder, or clone it into said folder. (**NOT `Assets`, `Packages`**)
-2. download the newest version of Harmony from https://github.com/pardeike/Harmony/releases and extract 0Harmony.dll from the 4.7.2 folder into your unity assets folder
+2. ~~download the newest version of Harmony from https://github.com/pardeike/Harmony/releases and extract 0Harmony.dll from the 4.7.2 folder into your unity assets folder~~    
+the VRChat SDK includes harmony since some versions ago, in december 2023
 
 ## Patches
 
-- ExpressionParameters list uses a ReorderableList
-- ExpressionMenu list uses a ReorderableList
+- ~~ExpressionParameters list uses a ReorderableList~~ removed august 2024, vrchat uses a reorderable list here natively
+- ~~ExpressionMenu list uses a ReorderableList~~ removed august 2024, vrchat uses a reorderable list here natively
 - ParameterDriver list uses a ReorderableList
 - ExpressionParameters asset can transfer parameters to a AnimatorController easily
 - disable upload restrictions (this is because I'm too lazy to add my EditorOnly objects to VRChats whitelist, its just to allow uploading. The components are still stripped.)
